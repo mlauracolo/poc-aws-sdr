@@ -2,23 +2,64 @@
 
 POC mínima en TypeScript para validar una arquitectura Axis-like donde un backend NestJS/Fastify y una Lambda AWS comparten código de dominio sin compartir el runtime HTTP.
 
+El dominio vive como paquete privado de workspace en `packages/domain` y se consume como `@sdr/domain`. El contexto de libros queda dentro de ese paquete en `packages/domain/src/book`, para que el paquete pueda sumar otros bounded contexts en el futuro.
+
 ## Qué valida
 
 - El backend usa NestJS/Fastify y expone `POST /books`.
-- La Lambda funciona como handler independiente.
-- Ambos pasan por `CreateBookUseCase` y usan la entidad `Book`.
+- El backend vive en el paquete privado `@sdr/library` y se despliega como contenedor Docker.
+- La Lambda de migración vive en el paquete privado `@sdr/integration`.
+- Ambos incluyen y usan la entidad `Book` exportada por `@sdr/domain`.
 - La Lambda se bundlea con `esbuild`.
 - El bundle de Lambda falla si arrastra cosas no deseadas como NestJS, Fastify, controllers, `app.module`, `book.module` o `main.ts`.
 
-## Por qué la Lambda no usa solo dominio
+## Estructura del workspace
 
-El dominio modela reglas puras: entidad, value objects y policies. Para ejecutar un flujo real también hace falta una entrada, un caso de uso y una salida. Por eso la Lambda usa:
+```text
+.
+└── packages/
+    ├── domain/
+    │   └── src/
+    │       ├── index.ts
+    │       └── book/
+    │           ├── book.ts
+    │           ├── value-object/
+    │           ├── policy/
+    │           └── error/
+    ├── book-store/
+    │   ├── Dockerfile
+    │   └── src/
+    │       ├── main.ts
+    │       └── book/
+    └── integration/
+        └── src/
+            └── lambda-modules/
+                └── migrate-books/
+```
 
-- `integration.handler.ts` como adaptador de entrada.
-- `CreateBookUseCase` como aplicación.
+`packages/domain/package.json` declara el paquete `@sdr/domain`. Los paquetes `@sdr/library` y `@sdr/integration` lo consumen con:
+
+```json
+"@sdr/domain": "workspace:*"
+```
+
+Cuando se buildea, el dominio compila a `packages/domain/dist` y los imports:
+
+```ts
+import { Book } from '@sdr/domain';
+```
+
+resuelven contra el `exports` del paquete.
+
+## Por qué la Lambda usa dominio directamente
+
+El dominio modela reglas puras: entidad, value objects y policies. En esta POC, la Lambda es un proceso de migración/integración y no importa el paquete del backend HTTP. Por eso la Lambda usa:
+
+- `migrate-books.handler.ts` como adaptador de entrada.
+- `Book` desde `@sdr/domain`.
 - `LambdaBookRepository` como adaptador de salida.
 
-Así la Lambda comparte el centro del negocio sin depender del framework web del backend.
+Así la Lambda comparte el centro del negocio sin depender del paquete `@sdr/library` ni del framework web del backend.
 
 ## Por qué no se importa NestJS en Lambda
 
@@ -27,13 +68,13 @@ NestJS pertenece al backend HTTP. Si la Lambda importa módulos, controllers o `
 ## Instalar dependencias
 
 ```bash
-npm install
+pnpm install
 ```
 
 ## Correr backend
 
 ```bash
-npm run start:dev
+pnpm run start:dev
 ```
 
 Probar:
@@ -47,36 +88,39 @@ curl -X POST http://localhost:3000/books \
 ## Buildear backend con Docker
 
 ```bash
-docker build -t poc-aws-sdr .
+docker build --secret id=npmrc,src=.npmrc \
+  --secret id=github_pat,env=GITHUB_PAT \
+  -f packages/book-store/Dockerfile \
+  -t poc-aws-sdr .
 docker run --rm -p 3000:3000 poc-aws-sdr
 ```
 
 ## Buildear Lambda
 
 ```bash
-npm run build:lambda
+pnpm run build:lambda
 ```
 
 El resultado queda en:
 
 ```text
-dist/lambda/integration.handler.js
+packages/integration/dist/lambda/migrate-books.handler.js
 ```
 
 También se puede correr:
 
 ```bash
-npm run build:lambda:all
-npm run check:lambda
+pnpm run build:lambda:all
+pnpm run check:lambda
 ```
 
 ## Probar handler manualmente
 
 ```bash
-npm run test:lambda
+pnpm run test:lambda
 ```
 
-El script ejecuta `src/book/infrastructure/lambda/integration.handler.ts` con este event:
+El script ejecuta `packages/integration/src/lambda-modules/migrate-books/migrate-books.handler.ts` con este event:
 
 ```json
 {
@@ -86,7 +130,7 @@ El script ejecuta `src/book/infrastructure/lambda/integration.handler.ts` con es
 
 ## Ver si se coló código no deseado
 
-`scripts/build-lambda.ts` imprime los archivos incluidos por `esbuild` desde `result.metafile.inputs` y falla si encuentra alguno de estos términos:
+`packages/integration/scripts/build-lambda.ts` imprime los archivos incluidos por `esbuild` desde `result.metafile.inputs` y falla si encuentra alguno de estos términos:
 
 - `@nestjs`
 - `fastify`
@@ -96,17 +140,17 @@ El script ejecuta `src/book/infrastructure/lambda/integration.handler.ts` con es
 - `controller`
 - `book.module`
 
-Para provocar un error intencional, agregá temporalmente este import en `src/book/infrastructure/lambda/integration.handler.ts`:
+Para provocar un error intencional, agregá temporalmente este import en `packages/integration/src/lambda-modules/migrate-books/migrate-books.handler.ts`:
 
 ```ts
-import { AppModule } from '../../../app.module';
+import { AppModule } from '../../../../book-store/src/app.module';
 void AppModule;
 ```
 
 Después corré:
 
 ```bash
-npm run check:lambda
+pnpm run check:lambda
 ```
 
 La validación debería fallar mostrando el input sospechoso que entró al bundle.

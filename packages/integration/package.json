@@ -1,0 +1,25 @@
+{
+	"name": "@sdr/integration",
+	"version": "0.1.0",
+	"private": true,
+	"main": "dist/index.js",
+	"types": "dist/index.d.ts",
+	"scripts": {
+		"build": "tsc -p tsconfig.json",
+		"build:lambda": "tsx scripts/build-lambda.ts migrate-books",
+		"build:lambda:all": "tsx scripts/build-lambda.ts all",
+		"check:lambda": "tsx scripts/build-lambda.ts migrate-books",
+		"test:lambda": "tsx scripts/test-lambda.ts"
+	},
+	"dependencies": {
+		"@pormeldev/axis-common-lib": "^2.1.0",
+		"@sdr/domain": "workspace:*"
+	},
+	"devDependencies": {
+		"@types/aws-lambda": "^8.10.161",
+		"@types/node": "^24.0.0",
+		"esbuild": "^0.28.0",
+		"tsx": "^4.22.3",
+		"typescript": "^5.9.3"
+	}
+}
