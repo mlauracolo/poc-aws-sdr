@@ -2,7 +2,7 @@
 
 ## Objetivo
 
-Esta POC valida que podemos tener un backend NestJS/Fastify con estructura Axis-like y una Lambda AWS compartiendo codigo de dominio y aplicacion, sin que la Lambda arrastre dependencias propias del backend.
+Esta POC valida que podemos tener un backend NestJS/Fastify con estructura Axis-like y una Lambda AWS compartiendo codigo de dominio, sin que la Lambda arrastre dependencias propias del backend.
 
 El objetivo principal no es desplegar todavia en AWS, sino confirmar la arquitectura, los imports, el bundle y la separacion entre runtimes.
 
@@ -21,7 +21,7 @@ La funcionalidad de crear libros esta separada en capas:
 - Infraestructura backend: controller NestJS y repositorio in-memory.
 - Infraestructura Lambda: handler AWS y repositorio especifico de Lambda.
 
-El backend y la Lambda comparten dominio y aplicacion, pero tienen entradas y adapters distintos.
+El backend y la Lambda comparten dominio. Cada runtime mantiene su propia capa de aplicacion, entrada y adapters.
 
 ## Flujo Backend
 
@@ -39,8 +39,7 @@ El backend usa NestJS/Fastify. Nest queda limitado a la capa de infraestructura 
 
 ```text
 APIGatewayProxyEventV2
-  -> integration.handler.ts
-  -> CreateBookCommandHandler
+  -> migrate-books.handler.ts
   -> Book.create(...)
   -> LambdaBookRepository
 ```
@@ -81,13 +80,13 @@ npx tsc --noEmit
 Ejecutar Lambda local:
 
 ```bash
-npm run test:lambda
+pnpm run test:lambda
 ```
 
 Ese comando ejecuta `scripts/test-lambda.ts`, que arma un `APIGatewayProxyEventV2` y llama a:
 
 ```text
-src/book/infrastructure/lambda/integration.handler.ts
+packages/integration/src/lambda-modules/migrate-books/migrate-books.handler.ts
 ```
 
 Respuesta esperada:
@@ -104,16 +103,16 @@ Respuesta esperada:
 Para buildear la Lambda:
 
 ```bash
-npm run build:lambda
+pnpm run build:lambda
 ```
 
 El output queda en:
 
 ```text
-dist/lambda/integration.handler.js
+packages/integration/dist/lambda/migrate-books.handler.js
 ```
 
-El script `scripts/build-lambda.ts` usa `esbuild` con:
+El script `packages/integration/scripts/build-lambda.ts` usa `esbuild` con:
 
 - `bundle: true`
 - `platform: node`
@@ -140,24 +139,23 @@ Terminos prohibidos actualmente:
 Agregar temporalmente un import incorrecto en el handler:
 
 ```ts
-import { BookModule } from '../book.module';
-void BookModule;
+import { AppModule } from '../../../../book-store/src/app.module';
+void AppModule;
 ```
 
 Luego correr:
 
 ```bash
-npm run check:lambda
+pnpm run check:lambda
 ```
 
-La validacion deberia fallar porque el bundle estaria incluyendo `book.module`, que pertenece al backend NestJS.
+La validacion deberia fallar porque el bundle estaria incluyendo `app.module`, que pertenece al backend NestJS.
 
 ## Estado actual
 
 La POC valida correctamente:
 
 - Backend y Lambda comparten dominio.
-- Backend y Lambda comparten caso de uso.
 - Lambda tiene adapter propio.
 - Lambda recibe un evento tipado como API Gateway HTTP API v2.
 - Lambda se puede ejecutar localmente sin AWS.
@@ -185,7 +183,7 @@ Para una V2 se podria agregar:
 
 - Adapter real usando DynamoDB, S3, SQS u otro servicio AWS.
 - Script de deploy con CDK, SAM, Serverless Framework o Terraform.
-- Tests unitarios para handler y command handler.
+- Tests unitarios para handler y casos de uso.
 - Tests de contaminacion de bundle automatizados en CI.
 - Manejo mas robusto de errores HTTP.
 - Separacion de DTOs de entrada para backend y Lambda.
