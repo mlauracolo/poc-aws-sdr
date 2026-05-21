@@ -1,5 +1,5 @@
 import type { APIGatewayProxyEventV2 } from "aws-lambda";
-import { handler } from "../src/lambda-modules/migrate-books/migrate-books.handler";
+import { handler } from "../src/lambda-modules/sync-boundary/infrastructure/source/sap/migrate-books.handler";
 
 async function main(): Promise<void> {
 	const event = createHttpApiEvent({

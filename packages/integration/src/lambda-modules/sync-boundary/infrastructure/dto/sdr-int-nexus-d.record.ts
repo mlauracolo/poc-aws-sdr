@@ -1,0 +1,23 @@
+export type SdrIntNexusDRecord = {
+  DOC_ID: number;
+  NRO_DOCUMENTO?: string | null;
+  TYPE_ID?: number | null;
+  TIPO?: string | null;
+  LAST_STATE_ID?: number | null;
+  DESCR_ESTADO?: string | null;
+  COND_CINUMATICA?: string | null;
+  INICIO_CORTE?: Date | string | null;
+  AFECTADOS_INI?: number | null;
+  AFECTADOS_AHORA?: number | null;
+  CANT_RECLAMOS_TOT?: number | null;
+  JERARQ_ELECTR?: string | null;
+  ALIM?: string | null;
+  SSE?: string | null;
+  CONFIRMAR_FALLA?: string | null;
+  AFECTA_SUMINISTRO?: string | null;
+  AREA_OP?: string | null;
+  PARTIDO?: string | null;
+  LOCALIDAD?: string | null;
+  DOM_A?: string | null;
+  FEC_PROC: string;
+};

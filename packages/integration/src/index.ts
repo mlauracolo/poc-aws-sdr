@@ -1,1 +1,1 @@
-export { handler as migrateBooksHandler } from "./lambda-modules/migrate-books/migrate-books.handler";
+export { handler as migrateBooksHandler } from "./lambda-modules/sync-boundary/infrastructure/source/sap/migrate-books.handler";

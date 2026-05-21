@@ -1,0 +1,28 @@
+export type TcvOrdenRecord = {
+  ORDEN_NRO: string;
+  ORDEN_CLASE?: string | null;
+  ORDEN_TXT?: string | null;
+  FEC_CREACION?: Date | string | null;
+  FEC_ULT_ACT?: Date | string | null;
+  EMPLAZAMIENTO?: string | null;
+  DIVISION?: string | null;
+  C_COSTO?: string | null;
+  PUESTO?: string | null;
+  FECHA?: Date | string | null;
+  ESTADO?: string | null;
+  HR_TEXT?: string | null;
+  ORDEN_PADRE?: string | null;
+  STATUS?: string | null;
+  AVISO_NRO?: string | null;
+  ORDEN_SUP?: string | null;
+  VISIBLE?: string | null;
+  TPLNR?: string | null;
+  PRIORIDAD?: string | null;
+  AREA_AVISO?: string | null;
+  DIV_AVISO?: string | null;
+  PARTIDO?: string | null;
+  LOCALIDAD?: string | null;
+  FEC_AVISO?: Date | string | null;
+  PRIOR_AVISO?: string | null;
+  BEGRU?: string | null;
+};

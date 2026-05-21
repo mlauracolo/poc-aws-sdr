@@ -4,7 +4,7 @@ import type {
 } from "aws-lambda";
 import { DateOnly, Decimal } from "@pormeldev/axis-common-lib";
 import { Book } from "@sdr/domain";
-import { LambdaBookRepository } from "./lambda-book.repository";
+import { LambdaBookRepository } from "../../adapter/out/db/typeorm/origin/repositories/lambda-book.repository";
 
 type CreateBookPayload = {
 	title?: unknown;
