@@ -1,7 +1,7 @@
 import { DateTime } from '@pormeldev/axis-common-lib';
 import { Column, Entity, PrimaryColumn } from 'typeorm';
 
-@Entity({ name: 'SDR_INT_NEXUS_A' })
+@Entity({ name: 'SDR_INT_NEXUS_A', schema: 'INTSDR' })
 export class SdrIntNexusAEntity {
   @PrimaryColumn({ name: 'NRO_ANOMALIA', type: 'number' })
   anomalyNumber!: number;

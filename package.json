@@ -14,7 +14,7 @@
 		"prepare": "husky",
 		"commitlint": "npx --no-install commitlint --config ./node_modules/@pormeldev/pormel-commit-conventions/dist/commitlint.config.js",
 		"build": "pnpm run build:domain && pnpm --filter @sdr/library build && pnpm --filter @sdr/integration build",
-		"build:docker": "docker build --secret id=npmrc,src=.npmrc --secret id=github_pat,env=GITHUB_PAT -f packages/book-store/Dockerfile -t poc-aws-sdr .",
+		"build:docker": "docker build --secret id=npmrc,src=.npmrc --secret id=github_pat,env=GITHUB_PAT -f packages/store/Dockerfile -t poc-aws-sdr .",
 		"start:dev": "pnpm --filter @sdr/library start:dev",
 		"start:prod": "pnpm --filter @sdr/library start:prod",
 		"test:unit": "jest --detectOpenHandles --passWithNoTests",

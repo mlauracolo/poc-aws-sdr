@@ -1,4 +1,4 @@
 packages:
   - "packages/domain"
-  - "packages/book-store"
+  - "packages/store"
   - "packages/integration"

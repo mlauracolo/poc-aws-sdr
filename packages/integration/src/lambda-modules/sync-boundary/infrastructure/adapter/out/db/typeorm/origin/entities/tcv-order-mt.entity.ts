@@ -1,6 +1,6 @@
 import { Column, Entity, PrimaryColumn } from 'typeorm';
 
-@Entity({ name: 'TCV_ORDEN_MT' })
+@Entity({ name: 'TCV_ORDEN_MT', schema: 'INTSDR' })
 export class TcvOrderMtEntity {
   @PrimaryColumn({ name: 'ORDEN_NRO', type: 'varchar2', length: 12 })
   orderNumber!: string;

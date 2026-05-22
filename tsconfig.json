@@ -10,13 +10,15 @@
 		"sourceMap": true,
 		"rootDir": "./packages",
 		"outDir": "./dist",
-		"baseUrl": "./",
+		"paths": {
+			"@sdr/domain": ["./packages/domain/dist/index.d.ts"]
+		},
 		"ignoreDeprecations": "6.0",
 		"incremental": true,
 		"strict": true,
 		"strictPropertyInitialization": false,
 		"skipLibCheck": true,
-		"esModuleInterop": true
+		"esModuleInterop": true,
 	},
 	"include": ["packages/**/*.ts", "scripts/**/*.ts"],
 	"exclude": ["node_modules", "dist", "packages/**/dist"]

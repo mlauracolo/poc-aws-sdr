@@ -1,6 +1,6 @@
 import { Column, Entity, PrimaryColumn } from 'typeorm';
 
-@Entity({ name: 'SDR_INT_NEXUS_D' })
+@Entity({ name: 'SDR_INT_NEXUS_D', schema: 'INTSDR' })
 export class SdrIntNexusDEntity {
   @PrimaryColumn({ name: 'DOC_ID', type: 'number' })
   docId!: number;
