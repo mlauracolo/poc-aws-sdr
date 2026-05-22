@@ -206,4 +206,27 @@ export class SdrIntNexusD {
   public getLocality(): string | null {
     return this._locality;
   }
+
+  public toSnapshot(): SdrIntNexusDFullData {
+		return {
+			docId: this._docId,
+			processDate: this._processDate,
+			documentNumber: this._documentNumber,
+			type: this._type,
+			lastStateId: this._lastStateId,
+			weatherCondition: this._weatherCondition,
+			startCut: this._startCut,
+			affectedInitial: this._affectedInitial,
+			affectedNow: this._affectedNow,
+			electricalHierarchy: this._electricalHierarchy,
+			supply: this._supply,
+			ssee: this._ssee,
+			confirmFailure: this._confirmFailure,
+			affectsSupply: this._affectsSupply,
+			areaOp: this._areaOp,
+			county: this._county,
+			locality: this._locality
+		};
+	}
+
 }
