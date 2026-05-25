@@ -2,9 +2,14 @@ import { DateTime, FieldError, okResult, Result } from "@pormeldev/axis-common-l
 
 export type TcvOrderBtFullData = Readonly<{
   orderNumber: string;
+  orderClass: string | null;
   textOrder: string | null;
   createdAt: DateTime | null;
   lastUpdatedDate: DateTime | null;
+  site: string | null; // emplazamiento
+  division: string | null;
+  costCenter: string | null;
+  position: string | null;
   eventDate: DateTime | null;
   status: string | null;
   hrText: string | null;
@@ -15,15 +20,25 @@ export type TcvOrderBtFullData = Readonly<{
   visible: string | null;
   tplnr: string | null;
   priority: string | null;
+  noticeArea: string | null;
+  noticeDivision: string | null;
   county: string | null;
   locality: string | null;
+  noticeDate: DateTime | null;
+  noticePriority: string | null;
+  begru: string | null;
 }>;
 
 export type TcvOrderBtData = Readonly<{
   orderNumber: string;
+  orderClass: string | null;
   textOrder: string | null;
   createdAt: DateTime | null;
   lastUpdatedDate: DateTime | null;
+  site: string | null;
+  division: string | null;
+  costCenter: string | null;
+  puesto: string | null;
   eventDate: DateTime | null;
   status: string | null;
   hrText: string | null;
@@ -34,15 +49,25 @@ export type TcvOrderBtData = Readonly<{
   visible: string | null;
   tplnr: string | null;
   priority: string | null;
+  noticeArea: string | null;
+  noticeDivision: string | null;
   county: string | null;
   locality: string | null;
+  noticeDate: DateTime | null;
+  noticePriority: string | null;
+  begru: string | null;
 }>;
 
 export type TcvOrderBtCreateInput = Readonly<{
   orderNumber: string;
+  orderClass: string | null;
   textOrder: string | null;
   createdAt: DateTime | null;
   lastUpdatedDate: DateTime | null;
+  site: string | null;
+  division: string | null;
+  costCenter: string | null;
+  position: string | null;
   eventDate: DateTime | null;
   status: string | null;
   hrText: string | null;
@@ -53,8 +78,13 @@ export type TcvOrderBtCreateInput = Readonly<{
   visible: string | null;
   tplnr: string | null;
   priority: string | null;
+  noticeArea: string | null;
+  noticeDivision: string | null;
   county: string | null;
   locality: string | null;
+  noticeDate: DateTime | null;
+  noticePriority: string | null;
+  begru: string | null;
 }>;
 
 export type TcvOrderBtUpdateInput = Readonly<Partial<TcvOrderBtData>>;
@@ -64,9 +94,14 @@ export class TcvOrderBt {
 
   private constructor(
     public _orderNumber: string,
+    public _orderClass: string | null,
     public _textOrder: string | null,
     public _createdAt: DateTime | null,
     public _lastUpdatedDate: DateTime | null,
+    public _site: string | null,
+    public _division: string | null,
+    public _costCenter: string | null,
+    public _position: string | null,
     public _eventDate: DateTime | null,
     public _status: string | null,
     public _hrText: string | null,
@@ -77,8 +112,13 @@ export class TcvOrderBt {
     public _visible: string | null,
     public _tplnr: string | null,
     public _priority: string | null,
+    public _noticeArea: string | null,
+    public _noticeDivision: string | null,
     public _county: string | null,
-    public _locality: string | null
+    public _locality: string | null,
+    public _noticeDate: DateTime | null,
+    public _noticePriority: string | null,
+    public _begru: string | null
   ) {
     this._errors = [];
   }
@@ -87,9 +127,14 @@ export class TcvOrderBt {
     return okResult(
       new TcvOrderBt(
         params.orderNumber,
+        params.orderClass,
         params.textOrder,
         params.createdAt,
         params.lastUpdatedDate,
+        params.site,
+        params.division,
+        params.costCenter,
+        params.position,
         params.eventDate,
         params.status,
         params.hrText,
@@ -100,8 +145,13 @@ export class TcvOrderBt {
         params.visible,
         params.tplnr,
         params.priority,
+        params.noticeArea,
+        params.noticeDivision,
         params.county,
-        params.locality
+        params.locality,
+        params.noticeDate,
+        params.noticePriority,
+        params.begru
       )
     );
   }
@@ -110,9 +160,14 @@ export class TcvOrderBt {
     return okResult(
       new TcvOrderBt(
         params.orderNumber,
+        params.orderClass,
         params.textOrder,
         params.createdAt,
         params.lastUpdatedDate,
+        params.site,
+        params.division,
+        params.costCenter,
+        params.position,
         params.eventDate,
         params.status,
         params.hrText,
@@ -123,8 +178,13 @@ export class TcvOrderBt {
         params.visible,
         params.tplnr,
         params.priority,
+        params.noticeArea,
+        params.noticeDivision,
         params.county,
-        params.locality
+        params.locality,
+        params.noticeDate,
+        params.noticePriority,
+        params.begru
       )
     );
   }
@@ -137,6 +197,10 @@ export class TcvOrderBt {
     return this._orderNumber;
   }
 
+  public getOrderClass(): string | null {
+    return this._orderClass;
+  }
+
   public getTextOrder(): string | null {
     return this._textOrder;
   }
@@ -147,6 +211,22 @@ export class TcvOrderBt {
 
   public getLastUpdatedDate(): DateTime | null {
     return this._lastUpdatedDate;
+  }
+
+  public getSite(): string | null {
+    return this._site;
+  }
+
+  public getDivision(): string | null {
+    return this._division;
+  }
+
+  public getCostCenter(): string | null {
+    return this._costCenter;
+  }
+
+  public getPosition(): string | null {
+    return this._position;
   }
 
   public getEventDate(): DateTime | null {
@@ -189,11 +269,31 @@ export class TcvOrderBt {
     return this._priority;
   }
 
+  public getNoticeArea(): string | null {
+    return this._noticeArea;
+  }
+
+  public getNoticeDivision(): string | null {
+    return this._noticeDivision;
+  }
+
   public getCounty(): string | null {
     return this._county;
   }
 
   public getLocality(): string | null {
     return this._locality;
+  }
+
+  public getNoticeDate(): DateTime | null {
+    return this._noticeDate;
+  }
+
+  public getNoticePriority(): string | null {
+    return this._noticePriority;
+  }
+
+  public getBegru(): string | null {
+    return this._begru;
   }
 }

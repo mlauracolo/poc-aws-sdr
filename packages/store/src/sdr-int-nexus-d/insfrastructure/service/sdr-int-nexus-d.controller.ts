@@ -1,6 +1,6 @@
-import { Controller } from "@nestjs/common";
+import { ApiJsonApiController } from "@pormeldev/axis-nestjs-common";
 
-@Controller("sdr-int-nexus-d")
+@ApiJsonApiController("sdr-int-nexus-d")
 export class SdrIntNexusDController {
   
 }

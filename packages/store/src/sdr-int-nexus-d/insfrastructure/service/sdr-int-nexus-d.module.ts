@@ -10,7 +10,6 @@ import { SdrIntNexusDRepository } from "./sdr-int-nexus-d.repository.port";
       provide: INT_NEXUS_D_QUERY_PORT,
       useClass: SdrIntNexusDRepository
     },
-    // Here we can add more providers related to the SdrIntNexusD module, such as services, query or command handlers, etc.
   ]
 })
 

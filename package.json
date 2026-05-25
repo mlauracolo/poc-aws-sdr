@@ -29,12 +29,34 @@
 		"lint:verify": "biome lint .",
 		"lint:write": "biome lint --write .",
 		"check:verify": "biome check .",
-		"check:write": "biome check --write"
+		"check:write": "biome check --write",
+		"@pormeldev/axis-module-logging-edenor": "2.0.0",
+		"@pormeldev/pormel-commit-conventions": "1.8.0-rc",
+		"@pormeldev/axis-common-lib": "2.0.0",
+		"@pormeldev/axis-logpublisher-edenor": "2.0.0",
+		"@pormeldev/axis-module-health": "2.1.0",
+		"@pormeldev/axis-module-users": "2.0.1",
+		"@pormeldev/axis-nestjs-common": "3.0.0",
+		"@pormeldev/axis-service-auditing": "2.0.0",
+		"@pormeldev/axis-service-authorization": "2.0.0",
+		"@pormeldev/axis-service-authorization-awsvp": "2.0.0",
+		"@pormeldev/axis-service-cache": "2.0.0",
+		"@pormeldev/axis-service-cache-redis": "2.0.0",
+		"@pormeldev/axis-service-database": "2.0.0",
+		"@pormeldev/axis-service-database-typeorm": "2.0.0",
+		"@pormeldev/axis-service-filestorage": "2.0.0",
+		"@pormeldev/axis-service-filestorage-awss3": "2.0.0",
+		"@pormeldev/axis-service-httpclient": "2.0.0",
+		"@pormeldev/axis-service-httpclient-axios": "2.0.0",
+		"@pormeldev/axis-service-logger": "3.0.0",
+		"@pormeldev/axis-service-logger-pino": "3.0.0",
+		"@pormeldev/axis-service-sequence": "2.0.0",
+		"@pormeldev/axis-service-sequence-typeorm": "3.0.0"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "2.2.0",
 		"@nestjs/cli": "^11.0.21",
-		"@pormeldev/pormel-commit-conventions": "1.8.0-rc",
+		"@pormeldev/pormel-commit-conventions": "1.7.0-rc",
 		"@swc/cli": "^0.7.10",
 		"@swc/core": "^1.15.33",
 		"@swc/jest": "^0.2.39",
@@ -65,5 +87,8 @@
 			],
 			"debug": false
 		}
+	},
+	"dependencies": {
+		"@pormeldev/axis-nestjs-common": "^3.2.0"
 	}
 }
