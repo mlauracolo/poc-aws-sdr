@@ -6,7 +6,8 @@
 		"declaration": true,
 		"declarationMap": true,
 		"sourceMap": true,
-		"tsBuildInfoFile": "./dist/tsconfig.tsbuildinfo"
+		"tsBuildInfoFile": "./dist/tsconfig.tsbuildinfo",
+		"types": ["node"]
 	},
 	"include": ["src/**/*.ts"],
 	"exclude": ["dist", "node_modules", "**/*.spec.ts"]

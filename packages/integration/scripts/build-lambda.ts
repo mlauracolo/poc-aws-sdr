@@ -3,7 +3,7 @@ import { join } from "node:path";
 import { build } from "esbuild";
 
 const lambdas = {
-	"migrate-books": "src/lambda-modules/migrate-books/migrate-books.handler.ts",
+	"sync-boundary": "src/lambda-modules/sync-boundary/sync-boundary.handler.ts",
 } as const;
 
 type LambdaName = keyof typeof lambdas;

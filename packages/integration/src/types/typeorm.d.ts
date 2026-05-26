@@ -1,10 +1,25 @@
 declare module 'typeorm' {
+  interface SelectQueryBuilder<T> {
+    subQuery(): SelectQueryBuilder<unknown>;
+    select(selection: string): this;
+    addSelect(selection: string, alias?: string): this;
+    from(entity: new () => unknown, alias: string): this;
+    where(condition: string | ((qb: SelectQueryBuilder<T>) => string), params?: Record<string, unknown>): this;
+    groupBy(field: string): this;
+    getQuery(): string;
+    setParameters(params: Record<string, unknown>): this;
+    getMany(): Promise<T[]>;
+    getOne(): Promise<T | null>;
+  }
+
   export class DataSource {
     constructor(options: Record<string, unknown>);
     isInitialized: boolean;
     initialize(): Promise<void>;
     getRepository<T>(entity: new () => T): {
       find(): Promise<T[]>;
+      save(entity: T): Promise<T>;
+      createQueryBuilder(alias: string): SelectQueryBuilder<T>;
     };
   }
 

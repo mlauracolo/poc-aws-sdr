@@ -89,6 +89,7 @@
 		}
 	},
 	"dependencies": {
-		"@pormeldev/axis-nestjs-common": "^3.2.0"
+		"@pormeldev/axis-nestjs-common": "^3.2.0",
+		"@pormeldev/axis-service-database-typeorm": "^2.0.1"
 	}
 }

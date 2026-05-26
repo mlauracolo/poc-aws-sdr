@@ -6,9 +6,9 @@
 	"types": "dist/index.d.ts",
 	"scripts": {
 		"build": "tsc -p tsconfig.json",
-		"build:lambda": "tsx scripts/build-lambda.ts migrate-books",
+		"build:lambda": "tsx scripts/build-lambda.ts sync-boundary",
 		"build:lambda:all": "tsx scripts/build-lambda.ts all",
-		"check:lambda": "tsx scripts/build-lambda.ts migrate-books",
+		"check:lambda": "tsx scripts/build-lambda.ts sync-boundary",
 		"test:lambda": "tsx scripts/test-lambda.ts"
 	},
 	"dependencies": {

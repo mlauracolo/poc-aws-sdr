@@ -11,7 +11,7 @@ export type TcvAvisoFullData = Readonly<{
   site: string | null;
   area: string | null;
   division: string | null;
-  addressNumber: string | null;
+  adrNr: string | null;
   eventDate: DateTime | null;
   lastSapDate: DateTime | null;
   closed: string | null;
@@ -30,7 +30,7 @@ export type TcvAvisoData = Readonly<{
   site: string | null;
   area: string | null;
   division: string | null;
-  addressNumber: string | null;
+  adrNr: string | null;
   eventDate: DateTime | null;
   lastSapDate: DateTime | null;
   closed: string | null;
@@ -49,7 +49,7 @@ export type TcvAvisoCreateInput = Readonly<{
   site: string | null;
   area: string | null;
   division: string | null;
-  addressNumber: string | null;
+  adrNr: string | null;
   eventDate: DateTime | null;
   lastSapDate: DateTime | null;
   closed: string | null;
@@ -96,7 +96,7 @@ export class TcvAviso {
         params.site,
         params.area,
         params.division,
-        params.addressNumber,
+        params.adrNr,
         params.eventDate,
         params.lastSapDate,
         params.closed,
@@ -119,7 +119,7 @@ export class TcvAviso {
         params.site,
         params.area,
         params.division,
-        params.addressNumber,
+        params.adrNr,
         params.eventDate,
         params.lastSapDate,
         params.closed,

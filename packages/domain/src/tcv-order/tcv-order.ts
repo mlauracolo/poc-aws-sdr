@@ -1,8 +1,8 @@
 import { DateTime, FieldError, okResult, Result } from "@pormeldev/axis-common-lib";
 
-export type TcvOrderBtFullData = Readonly<{
+export type TcvOrderFullData = Readonly<{
   orderNumber: string;
-  orderClass: string | null;
+  classOrder: string | null;
   textOrder: string | null;
   createdAt: DateTime | null;
   lastUpdatedDate: DateTime | null;
@@ -29,7 +29,9 @@ export type TcvOrderBtFullData = Readonly<{
   begru: string | null;
 }>;
 
-export type TcvOrderBtData = Readonly<{
+
+
+export type TcvOrderData = Readonly<{
   orderNumber: string;
   orderClass: string | null;
   textOrder: string | null;
@@ -58,9 +60,9 @@ export type TcvOrderBtData = Readonly<{
   begru: string | null;
 }>;
 
-export type TcvOrderBtCreateInput = Readonly<{
+export type TcvOrderCreateInput = Readonly<{
   orderNumber: string;
-  orderClass: string | null;
+  classOrder: string | null;
   textOrder: string | null;
   createdAt: DateTime | null;
   lastUpdatedDate: DateTime | null;
@@ -87,14 +89,14 @@ export type TcvOrderBtCreateInput = Readonly<{
   begru: string | null;
 }>;
 
-export type TcvOrderBtUpdateInput = Readonly<Partial<TcvOrderBtData>>;
+export type TcvOrderUpdateInput = Readonly<Partial<TcvOrderData>>;
 
-export class TcvOrderBt {
+export class TcvOrder {
   private _errors: FieldError[] = [];
 
   private constructor(
     public _orderNumber: string,
-    public _orderClass: string | null,
+    public _classOrder: string | null,
     public _textOrder: string | null,
     public _createdAt: DateTime | null,
     public _lastUpdatedDate: DateTime | null,
@@ -123,11 +125,11 @@ export class TcvOrderBt {
     this._errors = [];
   }
 
-  static create(params: TcvOrderBtCreateInput): Result<TcvOrderBt, FieldError[]> {
+  static create(params: TcvOrderCreateInput): Result<TcvOrder, FieldError[]> {
     return okResult(
-      new TcvOrderBt(
+      new TcvOrder(
         params.orderNumber,
-        params.orderClass,
+        params.classOrder,
         params.textOrder,
         params.createdAt,
         params.lastUpdatedDate,
@@ -156,11 +158,11 @@ export class TcvOrderBt {
     );
   }
 
-  static reconstitute(params: TcvOrderBtFullData): Result<TcvOrderBt, FieldError[]> {
+  static reconstitute(params: TcvOrderFullData): Result<TcvOrder, FieldError[]> {
     return okResult(
-      new TcvOrderBt(
+      new TcvOrder(
         params.orderNumber,
-        params.orderClass,
+        params.classOrder,
         params.textOrder,
         params.createdAt,
         params.lastUpdatedDate,
@@ -197,8 +199,8 @@ export class TcvOrderBt {
     return this._orderNumber;
   }
 
-  public getOrderClass(): string | null {
-    return this._orderClass;
+  public getClassOrder(): string | null {
+    return this._classOrder;
   }
 
   public getTextOrder(): string | null {

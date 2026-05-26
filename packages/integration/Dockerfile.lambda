@@ -1,0 +1,38 @@
+# syntax=docker/dockerfile:1.7
+
+# ── 1. Install workspace deps ──────────────────────────────────────────────────
+FROM node:22-alpine AS deps
+WORKDIR /app
+RUN corepack enable
+# Copy only manifests first for layer-cache efficiency
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+COPY packages/domain/package.json        packages/domain/package.json
+COPY packages/integration/package.json  packages/integration/package.json
+# The npmrc gives pnpm access to the private registry (@pormeldev scope)
+RUN --mount=type=secret,id=npmrc,target=/root/.npmrc \
+    --mount=type=secret,id=github_pat,target=/run/secrets/github_pat \
+    GITHUB_PAT="$(cat /run/secrets/github_pat)" \
+    pnpm install --frozen-lockfile
+
+# ── 2. Build domain + bundle lambda ───────────────────────────────────────────
+FROM node:22-alpine AS build
+WORKDIR /app
+RUN corepack enable
+COPY --from=deps /app/node_modules         ./node_modules
+COPY --from=deps /app/packages/domain/node_modules      packages/domain/node_modules
+COPY --from=deps /app/packages/integration/node_modules packages/integration/node_modules
+COPY . .
+# Build @sdr/domain so the bundle step can resolve the workspace package
+RUN pnpm --filter @sdr/domain build
+# Bundle the lambda with esbuild (output: packages/integration/dist/lambda/sync-boundary.handler.js)
+RUN pnpm --filter @sdr/integration build:lambda
+
+# ── 3. Minimal runtime image ───────────────────────────────────────────────────
+# AWS Lambda Node.js runtime image — replace with the version you target in AWS
+FROM public.ecr.aws/lambda/nodejs:22 AS runner
+WORKDIR ${LAMBDA_TASK_ROOT}
+
+COPY --from=build /app/packages/integration/dist/lambda/sync-boundary.handler.js ./sync-boundary.handler.js
+COPY --from=build /app/packages/integration/dist/lambda/sync-boundary.handler.js.map ./sync-boundary.handler.js.map
+
+CMD ["sync-boundary.handler.handler"]

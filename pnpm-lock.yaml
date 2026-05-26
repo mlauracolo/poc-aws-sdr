@@ -11,6 +11,9 @@ importers:
       '@pormeldev/axis-nestjs-common':
         specifier: ^3.2.0
         version: 3.2.0(30d95af15befd88a3272a78831d81c77)
+      '@pormeldev/axis-service-database-typeorm':
+        specifier: ^2.0.1
+        version: 2.0.1(typeorm@0.3.30(ts-node@10.9.2(@swc/core@1.15.33)(@types/node@24.12.4)(typescript@5.9.3)))
     devDependencies:
       '@biomejs/biome':
         specifier: 2.2.0
@@ -1772,6 +1775,14 @@ packages:
       '@nestjs/swagger': ^11.1.4
       fastify: ^5.7.4
       rxjs: ^7.8.2
+
+  '@pormeldev/axis-service-database-typeorm@2.0.1':
+    resolution: {integrity: sha512-dnFsxGnRuQ1iNJoUojCNbvQ5faPlVtsRgmscnx2oPRITgwh98ySb1CVfJIj4ebFxJayP89Jkt8KIok4UHLO3Yg==, tarball: https://npm.pkg.github.com/download/@pormeldev/axis-service-database-typeorm/2.0.1/9a1f67057c28959d0c8811f2afb406ded0d07c62}
+    peerDependencies:
+      typeorm: ^0.3.27
+
+  '@pormeldev/axis-service-database@2.0.1':
+    resolution: {integrity: sha512-MifTkR/s/VDLRqm27W9tgC4y8sjJUytnHwxm67NV1gOKHIdeUQK0B3Ep3KvBMRhO99Vi/l6B2gPvo2RWy6mdTg==, tarball: https://npm.pkg.github.com/download/@pormeldev/axis-service-database/2.0.1/54dd6eae5971ee4e28327df1b0b948c6ee020842}
 
   '@pormeldev/pormel-commit-conventions@1.7.0-rc':
     resolution: {integrity: sha512-5CZzQ0GBXaOCjhTgh0xmp0Ng3P+Le8Seie/74orNRtV7mwyh3pGQYFI8UCt3z3kKZAS+z/QE9TfcYcqGhbnIug==, tarball: https://npm.pkg.github.com/download/@pormeldev/pormel-commit-conventions/1.7.0-rc/707f5a583d98c8ac4923c7cd5bcd755c3442eaf4}
@@ -7055,6 +7066,16 @@ snapshots:
       - supports-color
       - ts-node
       - typeorm-aurora-data-api-driver
+
+  '@pormeldev/axis-service-database-typeorm@2.0.1(typeorm@0.3.30(ts-node@10.9.2(@swc/core@1.15.33)(@types/node@24.12.4)(typescript@5.9.3)))':
+    dependencies:
+      '@pormeldev/axis-common-lib': 2.1.0
+      '@pormeldev/axis-service-database': 2.0.1
+      typeorm: 0.3.30(ts-node@10.9.2(@swc/core@1.15.33)(@types/node@24.12.4)(typescript@5.9.3))
+
+  '@pormeldev/axis-service-database@2.0.1':
+    dependencies:
+      '@pormeldev/axis-common-lib': 2.1.0
 
   '@pormeldev/pormel-commit-conventions@1.7.0-rc(@types/node@24.12.4)(typescript@5.9.3)':
     dependencies:

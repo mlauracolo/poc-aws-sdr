@@ -1,65 +1,66 @@
 import { DateTime, Result, errorResult, okResult } from '@pormeldev/axis-common-lib';
-import { TcvOrderBt } from '@sdr/domain';
-import { ApplicationTcvOrderBtDto, TcvOrderBtDtoParams } from '../../../../../../common/application/dto/application-tcv-order-bt.dto';
-import { TcvOrderBtMappingError } from '../../../../../../common/application/error/tcv-order-bt-mapping.error';
-import { TcvOrderBtEntity } from '../origin/entities/tcv-order-bt.entity';
+import { TcvOrderMappingError } from '../../../../../../common/application/error/tcv-order-bt-mapping.error';
+import { TcvOrderEntity } from '../origin/entities/tcv-order.entity';
+import { ApplicationTcvOrderDto, TcvOrderDtoParams } from '../../../../../../common/application/dto/application-tcv-order-bt.dto';
+import { TcvOrder } from '@sdr/domain';
 
-export class TcvOrderBtTypeOrmMapper {
+export class TcvOrderTypeOrmMapper {
   static getColumnMapping(): Record<string, string> {
     return {
       orderNumber: 'ORDEN_NRO',
-      order_number: 'ORDEN_NRO',
-      textOrder: 'ORDEN_TXT',
-      text_order: 'ORDEN_TXT',
+      classOrder: 'ORDEN_CLASE',
+      txtOrder: 'ORDEN_TXT',
       createdAt: 'FEC_CREACION',
-      created_at: 'FEC_CREACION',
       lastUpdatedDate: 'FEC_ULT_ACT',
-      last_updated_date: 'FEC_ULT_ACT',
-      eventDate: 'FECHA',
-      event_date: 'FECHA',
+      site: 'EMPLAZAMIENTO',
       status: 'ESTADO',
       hrText: 'HR_TEXT',
-      hr_text: 'HR_TEXT',
       parentOrder: 'ORDEN_PADRE',
-      parent_order: 'ORDEN_PADRE',
       statusCode: 'STATUS',
-      status_code: 'STATUS',
       noticeNumber: 'AVISO_NRO',
-      notice_number: 'AVISO_NRO',
       supOrder: 'ORDEN_SUP',
-      sup_order: 'ORDEN_SUP',
       visible: 'VISIBLE',
       tplnr: 'TPLNR',
       priority: 'PRIORIDAD',
+      noticeArea: 'AREA_AVISO',
+      divNotice: 'DIV_AVISO',
       county: 'PARTIDO',
       locality: 'LOCALIDAD',
+      noticeDate: 'FEC_AVISO',
+      priorNotice: 'PRIOR_AVISO',
+      begru: 'FEC_BEGRU',
     };
   }
 
-  static mapOracleDBToApplicationDto(
+  static mapOracleToApplicationDto(
     oracleRow: Record<string, any>,
     timeZone?: string,
-  ): Result<TcvOrderBtDtoParams, TcvOrderBtMappingError> {
+  ): Result<TcvOrderDtoParams, TcvOrderMappingError> {
     try {
-      const dtoResult = ApplicationTcvOrderBtDto.create({
-        order_number: String(oracleRow.ORDEN_NRO ?? ''),
-        text_order: this.toNullableString(oracleRow.ORDEN_TXT),
-        created_at: this.toNullableDateTimeIso(oracleRow.FEC_CREACION, timeZone),
-        last_updated_date: this.toNullableDateTimeIso(oracleRow.FEC_ULT_ACT, timeZone),
-        event_date: this.toNullableDateTimeIso(oracleRow.FECHA, timeZone),
+      const dtoResult = ApplicationTcvOrderDto.create({
+        orderNumber: String(oracleRow.ORDEN_NRO ?? ''),
+        classOrder: this.toNullableString(oracleRow.ORDEN_CLASE),
+        txtOrder: this.toNullableString(oracleRow.ORDEN_TXT),
+        createdAt: oracleRow.FEC_CREACION ? new Date(oracleRow.FEC_CREACION) : null,
+        lastUpdatedDate: oracleRow.FEC_ULT_ACT ? new Date(oracleRow.FEC_ULT_ACT) : null,
+        site: this.toNullableString(oracleRow.EMPLAZAMIENTO),
         status: this.toNullableString(oracleRow.ESTADO),
-        hr_text: this.toNullableString(oracleRow.HR_TEXT),
-        parent_order: this.toNullableString(oracleRow.ORDEN_PADRE),
-        status_code: this.toNullableString(oracleRow.STATUS),
-        notice_number: this.toNullableString(oracleRow.AVISO_NRO),
-        sup_order: this.toNullableString(oracleRow.ORDEN_SUP),
+        hrText: this.toNullableString(oracleRow.HR_TEXT),
+        parentOrder: this.toNullableString(oracleRow.ORDEN_PADRE),
+        statusCode: this.toNullableString(oracleRow.STATUS),
+        noticeNumber: this.toNullableString(oracleRow.AVISO_NRO),
+        supOrder: this.toNullableString(oracleRow.ORDEN_SUP),
         visible: this.toNullableString(oracleRow.VISIBLE),
         tplnr: this.toNullableString(oracleRow.TPLNR),
         priority: this.toNullableString(oracleRow.PRIORIDAD),
+        noticeArea: this.toNullableString(oracleRow.AREA_AVISO),
+        divNotice: this.toNullableString(oracleRow.DIV_AVISO),
         county: this.toNullableString(oracleRow.PARTIDO),
         locality: this.toNullableString(oracleRow.LOCALIDAD),
+        noticeDate: oracleRow.FEC_AVISO ? new Date(oracleRow.FEC_AVISO) : null,
+        priorNotice: this.toNullableString(oracleRow.PRIOR_AVISO),
+        begru: this.toNullableString(oracleRow.FEC_BEGRU),
       });
-
       if (dtoResult.ok) {
         return okResult(dtoResult.value.toParams());
       }
@@ -67,7 +68,7 @@ export class TcvOrderBtTypeOrmMapper {
       return errorResult(dtoResult.errors);
     } catch (error) {
       return errorResult([
-        new TcvOrderBtMappingError('Failed to map Oracle row to TcvOrderBt DTO', {
+        new TcvOrderMappingError('Failed to map Oracle row to TcvOrderBt DTO', {
           oracleRow,
           timeZone,
           error: error instanceof Error ? error.message : error,
@@ -77,14 +78,15 @@ export class TcvOrderBtTypeOrmMapper {
   }
 
   static mapEntityToDomain(
-    entity: TcvOrderBtEntity,
-  ): Result<TcvOrderBt, TcvOrderBtMappingError> {
-    const domainResult = TcvOrderBt.reconstitute({
+    entity: TcvOrderEntity,
+  ): Result<TcvOrder, TcvOrderMappingError> {
+    const domainResult = TcvOrder.reconstitute({
       orderNumber: entity.orderNumber,
-      textOrder: entity.textOrder,
+      classOrder: entity.classOrder,
+      textOrder: entity.txtOrder,
       createdAt: this.toNullableDateTime(entity.createdAt),
       lastUpdatedDate: this.toNullableDateTime(entity.lastUpdatedDate),
-      eventDate: this.toNullableDateTime(entity.eventDate),
+      site: entity.site,
       status: entity.status,
       hrText: entity.hrText,
       parentOrder: entity.parentOrder,
@@ -94,8 +96,17 @@ export class TcvOrderBtTypeOrmMapper {
       visible: entity.visible,
       tplnr: entity.tplnr,
       priority: entity.priority,
+      noticeArea: entity.noticeArea,
+      divNotice: entity.divNotice,
       county: entity.county,
       locality: entity.locality,
+      noticeDate: this.toNullableDateTime(entity.noticeDate),
+      priorNotice: entity.priorNotice,
+      begru: entity.begru,
+      division: null,
+      costCenter: null,
+      position: null,
+      eventDate: null
     });
 
     if (domainResult.ok) {
@@ -105,38 +116,45 @@ export class TcvOrderBtTypeOrmMapper {
     const fieldErrors = domainResult.errors.flat();
 
     return errorResult([
-      new TcvOrderBtMappingError('Failed to map TcvOrderBt entity to domain', {
+      new TcvOrderMappingError('Failed to map TcvOrderBt entity to domain', {
         errors: fieldErrors.map((error) => error.message),
       }),
     ]);
   }
 
   static mapDomainToEntity(
-    domain: TcvOrderBt,
-  ): Result<TcvOrderBtEntity, TcvOrderBtMappingError> {
+    domain: TcvOrder,
+  ): Result<TcvOrderEntity, TcvOrderMappingError> {
     try {
-      const entity = new TcvOrderBtEntity();
+      
+      const entity = new TcvOrderEntity();
       entity.orderNumber = domain.getOrderNumber() ?? '';
-      entity.textOrder = domain.getTextOrder() ?? null;
-      entity.createdAt = this.toNullableDate(domain.getCreatedAt());
-      entity.lastUpdatedDate = this.toNullableDate(domain.getLastUpdatedDate());
-      entity.eventDate = this.toNullableDate(domain.getEventDate());
+      entity.classOrder = domain.getClassOrder() ?? null;
+      entity.txtOrder = domain.getTextOrder() ?? null;
+      entity.createdAt = this.toNullableDate(domain.getCreatedAt()) ?? new Date();
+      entity.lastUpdatedDate = this.toNullableDate(domain.getLastUpdatedDate()) ?? new Date();
+      entity.site = domain.getSite() ?? null;
       entity.status = domain.getStatus() ?? null;
       entity.hrText = domain.getHrText() ?? null;
       entity.parentOrder = domain.getParentOrder() ?? null;
       entity.statusCode = domain.getStatusCode() ?? null;
-      entity.noticeNumber = domain.getNoticeNumber() ?? null;
+      entity.noticeNumber = domain.getNoticeNumber();
       entity.supOrder = domain.getSupOrder() ?? null;
       entity.visible = domain.getVisible() ?? null;
       entity.tplnr = domain.getTplnr() ?? null;
       entity.priority = domain.getPriority() ?? null;
+      entity.noticeArea = domain.getNoticeArea() ?? null;
+      entity.divNotice = domain.getNoticeDivision() ?? null;
       entity.county = domain.getCounty() ?? null;
       entity.locality = domain.getLocality() ?? null;
+      entity.noticeDate = this.toNullableDate(domain.getNoticeDate()) ?? new Date();
+      entity.priorNotice = domain.getPriorNotice() ?? null;
+      entity.begru = domain.getBegru() ?? null;
 
       return okResult(entity);
     } catch (error) {
       return errorResult([
-        new TcvOrderBtMappingError('Failed to map TcvOrderBt domain to entity', {
+        new TcvOrderMappingError('Failed to map TcvOrderBt domain to entity', {
           error: error instanceof Error ? error.message : error,
         }),
       ]);
