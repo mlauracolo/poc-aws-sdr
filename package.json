@@ -15,6 +15,7 @@
 		"commitlint": "npx --no-install commitlint --config ./node_modules/@pormeldev/pormel-commit-conventions/dist/commitlint.config.js",
 		"build": "pnpm run build:domain && pnpm --filter @sdr/library build && pnpm --filter @sdr/integration build",
 		"build:docker": "docker build --secret id=npmrc,src=.npmrc --secret id=github_pat,env=GITHUB_PAT -f packages/store/Dockerfile -t poc-aws-sdr .",
+		"build:lambda:docker": "docker build --secret id=npmrc,src=.npmrc --secret id=github_pat,env=GITHUB_PAT -f packages/integration/Dockerfile.lambda -t poc-aws-sdr-lambda .",
 		"start:dev": "pnpm --filter @sdr/library start:dev",
 		"start:prod": "pnpm --filter @sdr/library start:prod",
 		"test:unit": "jest --detectOpenHandles --passWithNoTests",
@@ -90,6 +91,7 @@
 	},
 	"dependencies": {
 		"@pormeldev/axis-nestjs-common": "^3.2.0",
-		"@pormeldev/axis-service-database-typeorm": "^2.0.1"
+		"@pormeldev/axis-service-database-typeorm": "^2.0.1",
+		"oracledb": "^6.10.0"
 	}
 }

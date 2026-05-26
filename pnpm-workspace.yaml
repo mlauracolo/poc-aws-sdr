@@ -1,4 +1,7 @@
 packages:
-  - "packages/domain"
-  - "packages/store"
-  - "packages/integration"
+  - packages/domain
+  - packages/store
+  - packages/integration
+
+ignoredBuiltDependencies:
+  - oracledb
