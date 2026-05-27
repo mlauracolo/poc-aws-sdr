@@ -19,6 +19,15 @@ export class TcvOrderOriginRepository {
     return this.dataSource.getRepository(TcvOrderEntity).find();
   }
 
+  async findLatest(limit: number): Promise<TcvOrderEntity[]> {
+    return this.dataSource
+      .getRepository(TcvOrderEntity)
+      .createQueryBuilder('t')
+      .orderBy('t.lastUpdatedDate', 'DESC')
+      .take(limit)
+      .getMany();
+  }
+
   /**
    * Devuelve órdenes cuya FEC_ULT_ACT cae dentro del rango [startDate, endDate].
    *

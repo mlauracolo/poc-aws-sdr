@@ -1,31 +1,40 @@
 # syntax=docker/dockerfile:1.7
 
-FROM node:22-alpine AS deps
-WORKDIR /app
-RUN corepack enable
-COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
-COPY packages/domain/package.json packages/domain/package.json
-COPY packages/book-store/package.json packages/book-store/package.json
-COPY packages/integration/package.json packages/integration/package.json
-RUN --mount=type=secret,id=npmrc,target=/root/.npmrc --mount=type=secret,id=github_pat,target=/run/secrets/github_pat GITHUB_PAT="$(cat /run/secrets/github_pat)" pnpm install --frozen-lockfile
-
+# ── 1. Build (instala deps + compila en el mismo stage) ───────────────────────
+# Fusionar deps+build evita el problema de symlinks rotos al copiar
+# node_modules entre stages en pnpm v10.
 FROM node:22-alpine AS build
 WORKDIR /app
 RUN corepack enable
-COPY --from=deps /app/node_modules ./node_modules
+# Manifests primero para aprovechar cache de capas (solo reinstala si cambia package.json/lockfile)
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+COPY packages/domain/package.json      packages/domain/package.json
+COPY packages/store/package.json       packages/store/package.json
+COPY packages/integration/package.json packages/integration/package.json
+RUN --mount=type=secret,id=npmrc,target=/root/.npmrc \
+    --mount=type=secret,id=github_pat,target=/run/secrets/github_pat \
+    GITHUB_PAT="$(cat /run/secrets/github_pat)" \
+    pnpm install --frozen-lockfile
+# Código fuente (se invalida el cache solo si cambia src)
 COPY . .
-RUN --mount=type=secret,id=github_pat,target=/run/secrets/github_pat GITHUB_PAT="$(cat /run/secrets/github_pat)" pnpm run build
+RUN pnpm --filter @sdr/domain build
+RUN pnpm --filter @sdr/library build
 
+# ── 2. Imagen de producción ───────────────────────────────────────────────────
 FROM node:22-alpine AS runner
 WORKDIR /app
 ENV NODE_ENV=production
-RUN corepack enable
-COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+# node_modules desde build (symlinks pnpm intactos, misma estructura)
+COPY --from=build /app/node_modules ./node_modules
+COPY --from=build /app/packages/domain/node_modules packages/domain/node_modules
+COPY --from=build /app/packages/store/node_modules  packages/store/node_modules
+# Manifests para resolución del workspace
+COPY package.json pnpm-workspace.yaml ./
 COPY packages/domain/package.json packages/domain/package.json
-COPY packages/book-store/package.json packages/book-store/package.json
-COPY packages/integration/package.json packages/integration/package.json
-RUN --mount=type=secret,id=npmrc,target=/root/.npmrc --mount=type=secret,id=github_pat,target=/run/secrets/github_pat GITHUB_PAT="$(cat /run/secrets/github_pat)" pnpm install --prod --frozen-lockfile --ignore-scripts
-COPY --from=build /app/packages/book-store/dist ./packages/book-store/dist
+COPY packages/store/package.json   packages/store/package.json
+# Artefactos compilados
 COPY --from=build /app/packages/domain/dist ./packages/domain/dist
+COPY --from=build /app/packages/store/dist  ./packages/store/dist
 EXPOSE 3000
-CMD ["node", "packages/book-store/dist/main.js"]
+CMD ["node", "packages/store/dist/src/main.js"]
+

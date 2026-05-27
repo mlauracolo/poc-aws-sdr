@@ -8,6 +8,15 @@ export class SdrIntNexusAOriginRepository {
     return this.dataSource.getRepository(SdrIntNexusAEntity).find();
   }
 
+  async findLatest(limit: number): Promise<SdrIntNexusAEntity[]> {
+    return this.dataSource
+      .getRepository(SdrIntNexusAEntity)
+      .createQueryBuilder('t')
+      .orderBy('t.processDate', 'DESC')
+      .take(limit)
+      .getMany();
+  }
+
   /**
    * Devuelve el último snapshot (mayor FEC_PROC) por cada NRO_ANOMALIA
    * dentro del rango [startDate, endDate].

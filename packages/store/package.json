@@ -7,7 +7,7 @@
 	"scripts": {
 		"build": "nest build --builder swc",
 		"start:dev": "nest start -b swc -w",
-		"start:prod": "node dist/main.js"
+		"start:prod": "node dist/src/main.js"
 	},
 	"dependencies": {
 		"@nestjs/common": "^11.1.20",

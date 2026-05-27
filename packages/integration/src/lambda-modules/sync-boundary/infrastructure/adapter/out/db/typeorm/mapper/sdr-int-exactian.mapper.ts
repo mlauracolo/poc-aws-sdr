@@ -75,7 +75,7 @@ export class SdrIntExactianTypeOrmMapper {
   ): Result<SdrIntExactianEntity, SdrIntExactianMappingError> {
     try {
       const entity = new SdrIntExactianEntity();
-      entity.cuit = domain.getCuit() ?? null;
+      entity.cuit = domain.getCuit() ?? '';
       entity.contractorName = domain.getContractorName() ?? null;
       entity.cuil = domain.getCuil() ?? null;
       entity.dni = domain.getDni() ?? null;

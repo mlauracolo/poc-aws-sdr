@@ -8,6 +8,8 @@ declare module 'typeorm' {
     groupBy(field: string): this;
     getQuery(): string;
     setParameters(params: Record<string, unknown>): this;
+    orderBy(field: string, order?: 'ASC' | 'DESC'): this;
+    take(limit: number): this;
     getMany(): Promise<T[]>;
     getOne(): Promise<T | null>;
   }

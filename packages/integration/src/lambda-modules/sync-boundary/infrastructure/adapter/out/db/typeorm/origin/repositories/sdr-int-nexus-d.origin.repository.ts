@@ -8,6 +8,15 @@ export class SdrIntNexusDOriginRepository {
     return this.dataSource.getRepository(SdrIntNexusDEntity).find();
   }
 
+  async findLatest(limit: number): Promise<SdrIntNexusDEntity[]> {
+    return this.dataSource
+      .getRepository(SdrIntNexusDEntity)
+      .createQueryBuilder('t')
+      .orderBy('t.processDate', 'DESC')
+      .take(limit)
+      .getMany();
+  }
+
   /**
    * Devuelve el último snapshot (mayor FEC_PROC) por cada DOC_ID
    * dentro del rango [startDate, endDate].

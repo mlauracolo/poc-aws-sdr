@@ -100,6 +100,9 @@ importers:
       oracledb:
         specifier: ^6.10.0
         version: 6.10.0
+      typeorm:
+        specifier: ^0.3.30
+        version: 0.3.30(oracledb@6.10.0)(ts-node@10.9.2(@swc/core@1.15.33)(@types/node@24.12.4)(typescript@5.9.3))
     devDependencies:
       '@types/aws-lambda':
         specifier: ^8.10.161

@@ -65,6 +65,6 @@ export class TcvOrderEntity {
   @Column({ name: 'PRIOR_AVISO', type: 'varchar2', length: 1, nullable: true })
   priorNotice!: string | null;
 
-  @Column({ name: 'FEC_BEGRU', type: 'varchar2', length: 2, nullable: true })
+  @Column({ name: 'BEGRU', type: 'varchar2', length: 2, nullable: true })
   begru!: string | null;
 }

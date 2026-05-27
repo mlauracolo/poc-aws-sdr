@@ -1,9 +1,9 @@
-import { Column, Entity } from 'typeorm';
+import { Column, Entity, PrimaryColumn } from 'typeorm';
 
 @Entity({ name: 'sdr_exactian_destination', schema: 'sdr' })
 export class SdrIntExactianDestinationEntity {
-  @Column({ name: 'CUIT', type: 'varchar2', length: 13, nullable: true })
-  cuit!: string | null;
+  @PrimaryColumn({ name: 'CUIT', type: 'varchar2', length: 13 })
+  cuit!: string;
 
   @Column({ name: 'CONTRACTOR_NAME', type: 'varchar2', length: 100, nullable: true })
   contractorName!: string | null;

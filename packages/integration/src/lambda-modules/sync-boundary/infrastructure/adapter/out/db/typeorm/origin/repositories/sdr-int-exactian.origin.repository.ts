@@ -8,6 +8,14 @@ export class SdrIntExactianRepository {
     return this.dataSource.getRepository(SdrIntExactianEntity).find();
   }
 
+  async findLatest(limit: number): Promise<SdrIntExactianEntity[]> {
+    return this.dataSource
+      .getRepository(SdrIntExactianEntity)
+      .createQueryBuilder('t')
+      .take(limit)
+      .getMany();
+  }
+
   /**
    * SDR_INT_EXACTIAN no tiene columna de fecha/versión en el esquema actual,
    * por lo que no aplica el patrón snapshot. Se retorna la tabla completa.
@@ -15,22 +23,8 @@ export class SdrIntExactianRepository {
    * TODO(snapshot): cuando se agregue FEC_PROC a la entidad, aplicar el mismo
    * patrón de dedup por (clave_negocio, MAX(FEC_PROC)) que SDR_INT_NEXUS_*.
    */
-  async findLatestInRange(startDate: string, endDate: string): Promise<SdrIntExactianEntity[]> {
-    return this.dataSource
-      .getRepository(SdrIntExactianEntity)
-      .createQueryBuilder('t')
-      .where((qb: any) => {
-        const sub = qb
-          .subQuery()
-          .select('sub.anomalyNumber')
-          .addSelect('MAX(sub.processDate)', 'maxProcessDate')
-          .from(SdrIntExactianEntity, 'sub')
-          .where('sub.processDate BETWEEN :start AND :end')
-          .groupBy('sub.anomalyNumber')
-          .getQuery();
-        return `(t.anomalyNumber, t.processDate) IN ${sub}`;
-      })
-      .setParameters({ start: startDate, end: endDate })
-      .getMany();
+  async findLatestInRange(_startDate: string, _endDate: string): Promise<SdrIntExactianEntity[]> {
+    // SDR_INT_EXACTIAN no tiene columna de fecha — se devuelven todos los registros.
+    return this.dataSource.getRepository(SdrIntExactianEntity).find();
   }
 }

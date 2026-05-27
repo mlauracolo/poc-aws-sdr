@@ -19,6 +19,15 @@ export class TcvNoticeOriginRepository {
     return this.dataSource.getRepository(TcvAvisoEntity).find();
   }
 
+  async findLatest(limit: number): Promise<TcvAvisoEntity[]> {
+    return this.dataSource
+      .getRepository(TcvAvisoEntity)
+      .createQueryBuilder('t')
+      .orderBy('t.createdAt', 'DESC')
+      .take(limit)
+      .getMany();
+  }
+
   /**
    * Devuelve avisos cuya FEC_CREACION cae dentro del rango [startDate, endDate].
    *

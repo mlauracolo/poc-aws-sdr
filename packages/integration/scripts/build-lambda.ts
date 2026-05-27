@@ -70,6 +70,7 @@ async function buildLambda(name: LambdaName): Promise<void> {
 		sourcemap: true,
 		treeShaking: true,
 		metafile: true,
+		external: ['mssql', 'pg', 'mysql2/promise', 'mysql2', 'sqlite3', 'better-sqlite3', 'mysql'],
 	});
 
 	const inputFiles = Object.keys(result.metafile.inputs).sort();
