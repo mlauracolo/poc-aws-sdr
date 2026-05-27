@@ -18,6 +18,7 @@ declare module 'typeorm' {
     constructor(options: Record<string, unknown>);
     isInitialized: boolean;
     initialize(): Promise<void>;
+    destroy(): Promise<void>;
     getRepository<T>(entity: new () => T): {
       find(): Promise<T[]>;
       save(entity: T): Promise<T>;

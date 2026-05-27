@@ -238,11 +238,11 @@ async function syncTcvOrder(): Promise<void> {
 		dest.tplnr = d._tplnr;
 		dest.priority = d._priority;
 		dest.noticeArea = d._noticeArea;
-		dest.divNotice = d._noticeDivision;
+		dest.divNotice = d._divNotice;
 		dest.county = d._county;
 		dest.locality = d._locality;
 		dest.noticeDate = d._noticeDate;
-		dest.priorNotice = d._noticePriority;
+		dest.priorNotice = d._priorNotice;
 		dest.begru = d._begru;
 		await destRepo.save(dest);
 		saved++;
