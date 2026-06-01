@@ -10,7 +10,8 @@
 		"build:lambda:all": "tsx scripts/build-lambda.ts all",
 		"check:lambda": "tsx scripts/build-lambda.ts sync-boundary",
 		"test:lambda": "tsx --env-file=../../.env scripts/test-lambda.ts",
-		"test:sample": "tsx --env-file=../../.env scripts/test-sample-sync.ts"
+		"test:sample": "tsx --env-file=../../.env scripts/test-sample-sync.ts",
+		"test:domain": "tsx scripts/test-domain.ts"
 	},
 	"dependencies": {
 		"@pormeldev/axis-common-lib": "^2.1.0",
