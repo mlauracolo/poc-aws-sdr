@@ -16,7 +16,7 @@
 | Comando | Qué hace | Imagen generada |
 |---|---|---|
 | `pnpm run build:docker` | Buildea la imagen Docker del servicio NestJS (`packages/store/Dockerfile`) | `poc-aws-sdr:latest` |
-| `pnpm run build:lambda:docker` | Buildea la imagen Docker de la lambda (`packages/integration/Dockerfile.lambda`) | `poc-aws-sdr-lambda:latest` |
+| `pnpm run build:lambda:docker` | Buildea la imagen Docker de la lambda (`packages/integration/Dockerfile`) | `poc-aws-sdr-lambda:latest` |
 
 > **Requisito**: `$env:GITHUB_PAT` debe estar seteado con un PAT con SSO autorizado para la org `pormeldev`.
 

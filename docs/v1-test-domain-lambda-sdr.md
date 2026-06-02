@@ -112,7 +112,7 @@ destinationDataSource.initialize() ← Oracle DESTINO (env vars DEST_DB_*)
 ```powershell
 pnpm run build:docker
 # Equivale a:
-# docker build --secret id=npmrc,src=.npmrc --secret id=github_pat,env=GITHUB_PAT \
+# docker build --secret id=github_pat,env=GITHUB_PAT \
 #   -f packages/store/Dockerfile -t poc-aws-sdr .
 ```
 
@@ -127,13 +127,13 @@ pnpm run build:docker
 ```powershell
 pnpm run build:lambda:docker
 # Equivale a:
-# docker build --secret id=npmrc,src=.npmrc --secret id=github_pat,env=GITHUB_PAT \
-#   -f packages/integration/Dockerfile.lambda -t poc-aws-sdr-lambda .
+# docker build --secret id=github_pat,env=GITHUB_PAT \
+#   -f packages/integration/Dockerfile -t poc-aws-sdr-lambda .
 ```
 
-**Dockerfile** (`packages/integration/Dockerfile.lambda`):
+**Dockerfile** (`packages/integration/Dockerfile`):
 - Stage `build`: instala deps + compila domain + bundlea integration con **esbuild** → un único archivo `sync-boundary.handler.js`
-- Stage `runner`: imagen base `public.ecr.aws/lambda/nodejs:22`. Copia solo el bundle. Entry point: `sync-boundary.handler.handler`
+- Stage `runner`: imagen base `public.ecr.aws/lambda/nodejs:24`. Copia solo el bundle. Entry point: `sync-boundary.handler.handler`
 
 > El bundle esbuild incluye todo el código de la lambda en un solo archivo CJS. Las deps de Oracle (`oracledb`) se incluyen en el bundle. Los drivers opcionales (`mssql`, `pg`, `mysql2`) se marcan como `external` ya que son peer deps no utilizados de `@pormeldev/axis-service-database-typeorm`.
 

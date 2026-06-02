@@ -2,9 +2,9 @@
 	"extends": "../../tsconfig.json",
 	"compilerOptions": {
 		"baseUrl": ".",
+		"ignoreDeprecations": "6.0",
 		"rootDir": "./src",
-		"outDir": "./dist",
-		"tsBuildInfoFile": "./dist/tsconfig.tsbuildinfo"
+		"outDir": "./dist"
 	},
 	"include": ["src/**/*.ts", "../domain/src/sdr-int-nexus-d/error/sdr-int-nexus-d-domain-error-constants.ts"],
 	"exclude": ["dist", "node_modules", "**/*.spec.ts"]

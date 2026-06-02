@@ -26,7 +26,7 @@ El dominio vive como paquete privado de workspace en `packages/domain` y se cons
     │           ├── value-object/
     │           ├── policy/
     │           └── error/
-    ├── book-store/
+    ├── store/
     │   ├── Dockerfile
     │   └── src/
     │       ├── main.ts
@@ -88,9 +88,8 @@ curl -X POST http://localhost:3000/books \
 ## Buildear backend con Docker
 
 ```bash
-docker build --secret id=npmrc,src=.npmrc \
-  --secret id=github_pat,env=GITHUB_PAT \
-  -f packages/book-store/Dockerfile \
+docker build --secret id=github_pat,env=GITHUB_PAT \
+  -f packages/store/Dockerfile \
   -t poc-aws-sdr .
 docker run --rm -p 3000:3000 poc-aws-sdr
 ```
@@ -143,7 +142,7 @@ El script ejecuta `packages/integration/src/lambda-modules/migrate-books/migrate
 Para provocar un error intencional, agregá temporalmente este import en `packages/integration/src/lambda-modules/migrate-books/migrate-books.handler.ts`:
 
 ```ts
-import { AppModule } from '../../../../book-store/src/app.module';
+import { AppModule } from '../../../../store/src/app.module';
 void AppModule;
 ```
 
