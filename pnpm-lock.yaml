@@ -7,16 +7,6 @@ settings:
 importers:
 
   .:
-    dependencies:
-      '@pormeldev/axis-nestjs-common':
-        specifier: ^3.2.0
-        version: 3.2.0(a90e2185b2ce23f7ca8fe9fe90f06fa1)
-      '@pormeldev/axis-service-database-typeorm':
-        specifier: ^2.0.1
-        version: 2.0.1(typeorm@0.3.30(oracledb@6.10.0)(ts-node@10.9.2(@swc/core@1.15.33)(@types/node@24.12.4)(typescript@5.9.3)))
-      oracledb:
-        specifier: ^6.10.0
-        version: 6.10.0
     devDependencies:
       '@biomejs/biome':
         specifier: 2.2.0
@@ -79,48 +69,7 @@ importers:
         specifier: ^5.9.3
         version: 5.9.3
 
-  packages/domain:
-    dependencies:
-      '@pormeldev/axis-common-lib':
-        specifier: ^2.1.0
-        version: 2.1.0
-    devDependencies:
-      typescript:
-        specifier: ^5.9.3
-        version: 5.9.3
-
-  packages/integration:
-    dependencies:
-      '@pormeldev/axis-common-lib':
-        specifier: ^2.1.0
-        version: 2.1.0
-      '@sdr/domain':
-        specifier: workspace:*
-        version: link:../domain
-      oracledb:
-        specifier: ^6.10.0
-        version: 6.10.0
-      typeorm:
-        specifier: ^0.3.30
-        version: 0.3.30(oracledb@6.10.0)(ts-node@10.9.2(@swc/core@1.15.33)(@types/node@24.12.4)(typescript@5.9.3))
-    devDependencies:
-      '@types/aws-lambda':
-        specifier: ^8.10.161
-        version: 8.10.161
-      '@types/node':
-        specifier: ^24.0.0
-        version: 24.12.4
-      esbuild:
-        specifier: ^0.28.0
-        version: 0.28.0
-      tsx:
-        specifier: ^4.22.3
-        version: 4.22.3
-      typescript:
-        specifier: ^5.9.3
-        version: 5.9.3
-
-  packages/store:
+  packages/api:
     dependencies:
       '@nestjs/common':
         specifier: ^11.1.20
@@ -134,9 +83,12 @@ importers:
       '@pormeldev/axis-common-lib':
         specifier: ^2.1.0
         version: 2.1.0
+      '@pormeldev/axis-nestjs-common':
+        specifier: ^3.2.0
+        version: 3.2.0(a90e2185b2ce23f7ca8fe9fe90f06fa1)
       '@sdr/domain':
         specifier: workspace:*
-        version: link:../domain
+        version: link:../core
       reflect-metadata:
         specifier: ^0.2.2
         version: 0.2.2
@@ -156,6 +108,50 @@ importers:
       '@types/node':
         specifier: ^24.0.0
         version: 24.12.4
+      typescript:
+        specifier: ^5.9.3
+        version: 5.9.3
+
+  packages/core:
+    dependencies:
+      '@pormeldev/axis-common-lib':
+        specifier: ^2.1.0
+        version: 2.1.0
+    devDependencies:
+      typescript:
+        specifier: ^5.9.3
+        version: 5.9.3
+
+  packages/source-sync:
+    dependencies:
+      '@pormeldev/axis-common-lib':
+        specifier: ^2.1.0
+        version: 2.1.0
+      '@pormeldev/axis-service-database-typeorm':
+        specifier: ^2.0.1
+        version: 2.0.1(typeorm@0.3.30(oracledb@6.10.0)(ts-node@10.9.2(@swc/core@1.15.33)(@types/node@24.12.4)(typescript@5.9.3)))
+      '@sdr/domain':
+        specifier: workspace:*
+        version: link:../core
+      oracledb:
+        specifier: ^6.10.0
+        version: 6.10.0
+      typeorm:
+        specifier: ^0.3.30
+        version: 0.3.30(oracledb@6.10.0)(ts-node@10.9.2(@swc/core@1.15.33)(@types/node@24.12.4)(typescript@5.9.3))
+    devDependencies:
+      '@types/aws-lambda':
+        specifier: ^8.10.161
+        version: 8.10.161
+      '@types/node':
+        specifier: ^24.0.0
+        version: 24.12.4
+      esbuild:
+        specifier: ^0.28.0
+        version: 0.28.0
+      tsx:
+        specifier: ^4.22.3
+        version: 4.22.3
       typescript:
         specifier: ^5.9.3
         version: 5.9.3

@@ -3,4 +3,5 @@ export * from "./sdr-int-nexus-a/sdr-int-nexus-a";
 export * from "./sdr-int-nexus-d/sdr-int-nexus-d";
 export * from "./tcv-aviso/tcv-aviso";
 export * from "./tcv-order/tcv-order";
+export * from "./shared/math-demo";
 

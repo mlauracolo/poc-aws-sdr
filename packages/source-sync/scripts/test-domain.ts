@@ -5,7 +5,7 @@
  * usando entidades dummy — sin necesidad de conexión a base de datos.
  *
  * Uso:
- *   pnpm --filter @sdr/integration run test:domain
+ *   pnpm --filter @sdr/source-sync run test:domain
  */
 
 import { SdrIntExactianEntity } from "../src/lambda-modules/sync-boundary/infrastructure/adapter/out/db/typeorm/origin/entities/sdr-int-exactian.entity";

@@ -5,19 +5,19 @@
 	"packageManager": "pnpm@10.30.0",
 	"scripts": {
 		"build:domain": "pnpm --filter @sdr/domain build",
-		"build:library": "pnpm run build:domain && pnpm --filter @sdr/library build",
-		"build:integration": "pnpm run build:domain && pnpm --filter @sdr/integration build",
-		"build:lambda": "pnpm run build:domain && pnpm --filter @sdr/integration build:lambda",
-		"build:lambda:all": "pnpm run build:domain && pnpm --filter @sdr/integration build:lambda:all",
-		"check:lambda": "pnpm run build:domain && pnpm --filter @sdr/integration check:lambda",
-		"test:lambda": "pnpm --filter @sdr/integration test:lambda",
+		"build:api": "pnpm run build:domain && pnpm --filter @sdr/api build",
+		"build:source-sync": "pnpm run build:domain && pnpm --filter @sdr/source-sync build",
+		"build:lambda": "pnpm run build:domain && pnpm --filter @sdr/source-sync build:lambda",
+		"build:lambda:all": "pnpm run build:domain && pnpm --filter @sdr/source-sync build:lambda:all",
+		"check:lambda": "pnpm run build:domain && pnpm --filter @sdr/source-sync check:lambda",
+		"test:lambda": "pnpm --filter @sdr/source-sync test:lambda",
 		"prepare": "husky",
 		"commitlint": "npx --no-install commitlint --config ./node_modules/@pormeldev/pormel-commit-conventions/dist/commitlint.config.js",
-		"build": "pnpm run build:domain && pnpm --filter @sdr/library build && pnpm --filter @sdr/integration build",
-		"build:docker": "docker build --secret id=github_pat,env=GITHUB_PAT -f packages/store/Dockerfile -t poc-aws-sdr .",
-		"build:lambda:docker": "docker build --secret id=github_pat,env=GITHUB_PAT -f packages/integration/Dockerfile -t poc-aws-sdr-lambda .",
-		"start:dev": "pnpm --filter @sdr/library start:dev",
-		"start:prod": "pnpm --filter @sdr/library start:prod",
+		"build": "pnpm run build:domain && pnpm --filter @sdr/api build && pnpm --filter @sdr/source-sync build",
+		"build:docker": "docker build --secret id=github_pat,env=GITHUB_PAT -f packages/api/Dockerfile -t poc-aws-sdr .",
+		"build:lambda:docker": "docker build --secret id=github_pat,env=GITHUB_PAT -f packages/source-sync/Dockerfile -t poc-aws-sdr-lambda .",
+		"start:dev": "pnpm --filter @sdr/api start:dev",
+		"start:prod": "pnpm --filter @sdr/api start:prod",
 		"test:unit": "jest --detectOpenHandles --passWithNoTests",
 		"test:watch": "jest --watch",
 		"test:application": "jest 'packages/**/application/__tests__/**/*.spec.ts'",
@@ -30,29 +30,7 @@
 		"lint:verify": "biome lint .",
 		"lint:write": "biome lint --write .",
 		"check:verify": "biome check .",
-		"check:write": "biome check --write",
-		"@pormeldev/axis-module-logging-edenor": "2.0.0",
-		"@pormeldev/pormel-commit-conventions": "1.8.0-rc",
-		"@pormeldev/axis-common-lib": "2.0.0",
-		"@pormeldev/axis-logpublisher-edenor": "2.0.0",
-		"@pormeldev/axis-module-health": "2.1.0",
-		"@pormeldev/axis-module-users": "2.0.1",
-		"@pormeldev/axis-nestjs-common": "3.0.0",
-		"@pormeldev/axis-service-auditing": "2.0.0",
-		"@pormeldev/axis-service-authorization": "2.0.0",
-		"@pormeldev/axis-service-authorization-awsvp": "2.0.0",
-		"@pormeldev/axis-service-cache": "2.0.0",
-		"@pormeldev/axis-service-cache-redis": "2.0.0",
-		"@pormeldev/axis-service-database": "2.0.0",
-		"@pormeldev/axis-service-database-typeorm": "2.0.0",
-		"@pormeldev/axis-service-filestorage": "2.0.0",
-		"@pormeldev/axis-service-filestorage-awss3": "2.0.0",
-		"@pormeldev/axis-service-httpclient": "2.0.0",
-		"@pormeldev/axis-service-httpclient-axios": "2.0.0",
-		"@pormeldev/axis-service-logger": "3.0.0",
-		"@pormeldev/axis-service-logger-pino": "3.0.0",
-		"@pormeldev/axis-service-sequence": "2.0.0",
-		"@pormeldev/axis-service-sequence-typeorm": "3.0.0"
+		"check:write": "biome check --write"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "2.2.0",
@@ -89,9 +67,5 @@
 			"debug": false
 		}
 	},
-	"dependencies": {
-		"@pormeldev/axis-nestjs-common": "^3.2.0",
-		"@pormeldev/axis-service-database-typeorm": "^2.0.1",
-		"oracledb": "^6.10.0"
-	}
+	"dependencies": {}
 }

@@ -1,5 +1,5 @@
 {
-	"name": "@sdr/integration",
+	"name": "@sdr/source-sync",
 	"version": "0.1.0",
 	"private": true,
 	"main": "dist/index.js",
@@ -15,6 +15,7 @@
 	},
 	"dependencies": {
 		"@pormeldev/axis-common-lib": "^2.1.0",
+		"@pormeldev/axis-service-database-typeorm": "^2.0.1",
 		"@sdr/domain": "workspace:*",
 		"oracledb": "^6.10.0",
 		"typeorm": "^0.3.30"

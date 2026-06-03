@@ -86,7 +86,7 @@ async function buildLambda(name: LambdaName): Promise<void> {
 	const sizeInBytes = existsSync(outputPath) ? statSync(outputPath).size : 0;
 	const sizeInKb = (sizeInBytes / 1024).toFixed(2);
 
-	console.log(`\nOutput: packages/integration/${outfile}`);
+	console.log(`\nOutput: packages/source-sync/${outfile}`);
 	console.log(`Approx size: ${sizeInKb} KB`);
 	console.log("Bundle validation passed");
 }
