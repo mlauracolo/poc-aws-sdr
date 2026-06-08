@@ -1,10 +1,10 @@
 import { DateTime } from "@pormeldev/axis-common-lib";
 import { PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, VersionColumn, ManyToOne, JoinColumn, OneToMany } from "typeorm";
-import { BtGridEventColumns } from "../../../fields/bt-grid-event-columns.enum";
 import { oracleDateTimeTransformer } from "../../../transformer/oracle-date-time.transformer";
 import { BtDocumentEntity } from "./bt-document.entity";
 import { BtGridEventKeyEntity } from "./bt-grid-event-key.entity";
 import { BtWorkOrderEntity } from "./bt-work-order.entity";
+import { BtGridEventColumns } from "../../../fields/bt-grid-event-columns.enum";
 
 export class BtGridEventEntity {
   /** FSD BT: sin campo de negocio. Origen: tecnico. Dominio: sin equivalente directo; PK surrogate de Oracle. */

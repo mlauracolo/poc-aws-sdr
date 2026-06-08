@@ -8,11 +8,11 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { BtDocumentColumns } from '../../../fields/bt-documents-columns.enum';
-import { BtTableNames } from '../../../schema/bt-table-names.enum';
 import { oracleDateTimeTransformer } from '../../../transformer/oracle-date-time.transformer';
 import { BtAffectedCustomersHistoryEntity } from './bt-affected-customer-history.entity';
 import { BtGridEventEntity } from './bt-grid-event.entity';
+import { BtTableNames } from '../../../bt-table-names.enum';
+import { BtDocumentColumns } from '../../../fields/bt-document-columns.enum';
 
 @Entity({ name: BtTableNames.DOCUMENTS })
 @Index('UK_BT_DOCS_NEXUS_DOC', ['nexusDocumentNumber'], { unique: true })

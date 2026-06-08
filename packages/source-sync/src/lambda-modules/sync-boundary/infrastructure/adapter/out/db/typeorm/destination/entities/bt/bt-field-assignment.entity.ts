@@ -1,9 +1,9 @@
 import { DateTime } from "@pormeldev/axis-common-lib";
 import { Entity, Index, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn } from "typeorm";
-import { BtFieldAssignmentColumns } from "../../../fields/bt-field-assignment-columns.enum";
-import { BtTableNames } from "../../../schema/bt-table-names.enum";
 import { oracleDateTimeTransformer } from "../../../transformer/oracle-date-time.transformer";
 import { BtWorkOrderEntity } from "./bt-work-order.entity";
+import { BtFieldAssignmentColumns } from "../../../fields/bt-field-assignment-columns.enum";
+import { BtTableNames } from "../../../bt-table-names.enum";
 
 @Entity({ name: BtTableNames.FIELD_ASSIGNMENTS })
 @Index('UK_BT_FA_DOMAIN', ['id'], { unique: true })

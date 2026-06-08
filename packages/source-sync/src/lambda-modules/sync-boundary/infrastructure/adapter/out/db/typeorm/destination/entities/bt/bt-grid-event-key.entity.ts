@@ -1,7 +1,7 @@
 import { Entity, Index, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from "typeorm";
-import { BtGridEventKeyColumns } from "../../../fields/bt-grid-event-key-columns.enum";
-import { BtTableNames } from "../../../schema/bt-table-names.enum";
 import { BtGridEventEntity } from "./bt-grid-event.entity";
+import { BtTableNames } from "../../../bt-table-names.enum";
+import { BtGridEventKeyColumns } from "../../../fields/bt-grid-event-key-columns.enum";
 
 @Entity({ name: BtTableNames.GRID_EVENT_KEYS })
 @Index('UK_BT_GE_KEYS', ['keyName', 'keyValue'], { unique: true })

@@ -1,10 +1,10 @@
 import { DateTime } from "@pormeldev/axis-common-lib";
 import { Entity, Index, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn, OneToMany } from "typeorm";
-import { BtWorkOrderColumns } from "../../../fields/bt-work-order-columns.enum";
-import { BtTableNames } from "../../../schema/bt-table-names.enum";
 import { oracleDateTimeTransformer } from "../../../transformer/oracle-date-time.transformer";
 import { BtFieldAssignmentEntity } from "./bt-field-assignment.entity";
 import { BtGridEventEntity } from "./bt-grid-event.entity";
+import { BtTableNames } from "../../../bt-table-names.enum";
+import { BtWorkOrderColumns } from "../../../fields/bt-work-order-columns-enum";
 
 @Entity({ name: BtTableNames.WORK_ORDERS })
 @Index('UK_BT_WO_DOMAIN', ['id'], { unique: true })
@@ -13,43 +13,43 @@ import { BtGridEventEntity } from "./bt-grid-event.entity";
 @Index('IDX_BT_WO_PARENT', ['parentWorkOrderSid'])
 @Index('IDX_BT_WO_ROOT', ['rootWorkOrderSid'])
 export class BtWorkOrderEntity {
-  /////** FSD BT: sin campo de negocio. Origen: tecnico. Dominio: sin equivalente directo; PK surrogate de Oracle. */
+  //* FSD BT: sin campo de negocio. Origen: tecnico. Dominio: sin equivalente directo; PK surrogate de Oracle. */
   @PrimaryGeneratedColumn({ name: BtWorkOrderColumns.ID, type: 'number' })
   sid!: number;
 
-  /////** FSD BT: identidad interna UUIDv7 del dominio. Origen: dominio. Dominio: WorkOrder.id. */
+  //* FSD BT: identidad interna UUIDv7 del dominio. Origen: dominio. Dominio: WorkOrder.id. */
   @Column({ name: BtWorkOrderColumns.DOMAIN_ID, type: 'varchar2', length: 36 })
   id!: string;
 
-  /////** FSD BT: orden pertenece al registro. Origen: relacion tecnica. Dominio: workOrders. */
+  //* FSD BT: orden pertenece al registro. Origen: relacion tecnica. Dominio: workOrders. */
   @Column({ name: BtWorkOrderColumns.GRID_EVENT_ID, type: 'number' })
   gridEventSid!: number;
 
-  /////** FSD BT: arbol de subordenes. Origen: relacion tecnica. Dominio: WorkOrder.parentId. */
+  //* FSD BT: arbol de subordenes. Origen: relacion tecnica. Dominio: WorkOrder.parentId. */
   @Column({ name: BtWorkOrderColumns.PARENT_WORK_ORDER_ID, type: 'number', nullable: true })
   parentWorkOrderSid!: number | null;
 
-  /////** FSD BT: arbol de subordenes. Origen: relacion tecnica. Dominio: WorkOrder.rootParentId. */
+  //* FSD BT: arbol de subordenes. Origen: relacion tecnica. Dominio: WorkOrder.rootParentId. */
   @Column({ name: BtWorkOrderColumns.ROOT_WORK_ORDER_ID, type: 'number', nullable: true })
   rootWorkOrderSid!: number | null;
 
-  /////** FSD BT #12 AVISO (Numero OT) SAP. Origen: SAP. Dominio: WorkOrder.sapReference.sapNotificationNumber. */
+  //* FSD BT #12 AVISO (Numero OT) SAP. Origen: SAP. Dominio: WorkOrder.sapReference.sapNotificationNumber. */
   @Column({ name: BtWorkOrderColumns.SAP_NOTIFICATION_NUMBER, type: 'varchar2', length: 12 })
   sapNotificationNumber!: string;
 
-  /////** FSD BT #13 Numero de Orden. Origen: SAP asociada al aviso. Dominio: WorkOrder.sapReference.sapOrderNumber. */
+  //* FSD BT #13 Numero de Orden. Origen: SAP asociada al aviso. Dominio: WorkOrder.sapReference.sapOrderNumber. */
   @Column({ name: BtWorkOrderColumns.SAP_ORDER_NUMBER, type: 'varchar2', length: 12 })
   sapOrderNumber!: string;
 
   // TODO(Dominio): WorkOrder.taskType ya no se persiste. Si no aparece una semantica SAP independiente, removerlo del dominio y usar solo stage.
 
   // TODO(BA/SAP): confirmar si WorkOrder.stage debe derivarse de un diccionario sobre HR_TEXT/ORDEN_TXT o de otra senal. ODS Mapeo-SAP aclara que la relacion "suborden 1 Localizacion, 2 Zanjeo, 3 Corte y Prueba, 4 Reparacion, 5 Normalizacion" no existe como regla segura en SAP.
-  /////** FSD BT #24/#27/#30 y seccion Visualizacion jerarquica: etapa operativa de la orden/suborden (Localizacion, Zanjeo, Reparacion, Normalizacion). Origen: SAP/suborden. Dominio: WorkOrder.stage. */
+  //* FSD BT #24/#27/#30 y seccion Visualizacion jerarquica: etapa operativa de la orden/suborden (Localizacion, Zanjeo, Reparacion, Normalizacion). Origen: SAP/suborden. Dominio: WorkOrder.stage. */
   @Column({ name: BtWorkOrderColumns.STAGE, type: 'varchar2', length: 20 })
   stage!: string;
 
   // TODO(Dominio/BA): este campo persiste una hipotesis del dominio actual. No preguntar por "NORMALIZED_STATUS"; preguntar si los estados reales de orden SAP deben bloquear asignaciones o cierre del caso.
-  /** FSD BT: no existe como campo visible del detalle. No es el STATUS crudo de SAP; ese vive en sapStatusCode. Origen: estado normalizado propio del sistema, inferible a futuro desde SAP_ESTADO/SAP_STATUS_CODE si negocio confirma reglas. Dominio: WorkOrder.status. Hoy el dominio lo usa para terminalidad, bloqueo de asignaciones y cierre del caso; esa logica no esta confirmada por FSD/ODS y debe tratarse como hipotesis hasta validacion. */
+  /* FSD BT: no existe como campo visible del detalle. No es el STATUS crudo de SAP; ese vive en sapStatusCode. Origen: estado normalizado propio del sistema, inferible a futuro desde SAP_ESTADO/SAP_STATUS_CODE si negocio confirma reglas. Dominio: WorkOrder.status. Hoy el dominio lo usa para terminalidad, bloqueo de asignaciones y cierre del caso; esa logica no esta confirmada por FSD/ODS y debe tratarse como hipotesis hasta validacion. */
   @Column({ name: BtWorkOrderColumns.NORMALIZED_STATUS, type: 'varchar2', length: 20 })
   normalizedStatus!: string;
 
@@ -132,7 +132,7 @@ export class BtWorkOrderEntity {
   })
   manualOverrides!: string | null;
 
-  /////** FSD BT: fecha de borrado logico de orden/suborden. Origen: tecnico. Domain queda fuera de scope y se conserva sin cambios hasta conectar mapeo. */
+  //* FSD BT: fecha de borrado logico de orden/suborden. Origen: tecnico. Domain queda fuera de scope y se conserva sin cambios hasta conectar mapeo. */
   @Column({
     name: BtWorkOrderColumns.DELETED_AT,
     type: 'timestamp',
@@ -141,7 +141,7 @@ export class BtWorkOrderEntity {
   })
   deletedAt!: DateTime | null;
 
-  /////** FSD BT: sin campo de negocio. Origen: tecnico. Dominio: sin equivalente directo; alta en persistencia. */
+  //** FSD BT: sin campo de negocio. Origen: tecnico. Dominio: sin equivalente directo; alta en persistencia. */
   @CreateDateColumn({
     name: BtWorkOrderColumns.CREATED_AT,
     type: 'timestamp',
@@ -149,7 +149,7 @@ export class BtWorkOrderEntity {
   })
   createdAt!: DateTime;
 
-  /////** FSD BT: sin campo de negocio. Origen: tecnico. Dominio: sin equivalente directo; ultima escritura en persistencia. */
+  //* FSD BT: sin campo de negocio. Origen: tecnico. Dominio: sin equivalente directo; ultima escritura en persistencia. */
   @UpdateDateColumn({
     name: BtWorkOrderColumns.UPDATED_AT,
     type: 'timestamp',
@@ -158,7 +158,7 @@ export class BtWorkOrderEntity {
   updatedAt!: DateTime;
 
   // ----------- RELACIONES ------------------------
-  /** FSD BT: orden pertenece al registro. Origen: relacion tecnica. Dominio: workOrders. */
+  //* FSD BT: orden pertenece al registro. Origen: relacion tecnica. Dominio: workOrders. */
   @ManyToOne(
     () => BtGridEventEntity,
     (gridEvent) => gridEvent.workOrders,
@@ -167,7 +167,7 @@ export class BtWorkOrderEntity {
   @JoinColumn({ name: BtWorkOrderColumns.GRID_EVENT_ID, referencedColumnName: 'sid' })
   gridEvent?: BtGridEventEntity;
 
-  /** FSD BT: ramificacion de subordenes en arbol. Origen: relacion tecnica. Dominio: WorkOrder.parentId. */
+  //* FSD BT: ramificacion de subordenes en arbol. Origen: relacion tecnica. Dominio: WorkOrder.parentId. */
   @ManyToOne(
     () => BtWorkOrderEntity,
     (workOrder) => workOrder.subOrders,
@@ -184,7 +184,7 @@ export class BtWorkOrderEntity {
   @JoinColumn({ name: BtWorkOrderColumns.ROOT_WORK_ORDER_ID, referencedColumnName: 'sid' })
   rootWorkOrder?: BtWorkOrderEntity | null;
 
-  /** FSD BT: subordenes hijas de la orden. Origen: relacion tecnica. Dominio: WorkOrder.subOrders. */
+  //* FSD BT: subordenes hijas de la orden. Origen: relacion tecnica. Dominio: WorkOrder.subOrders. */
   @OneToMany(
     () => BtWorkOrderEntity,
     (workOrder) => workOrder.parentWorkOrder,
@@ -192,7 +192,7 @@ export class BtWorkOrderEntity {
   )
   subOrders?: BtWorkOrderEntity[];
 
-  /** FSD BT #25/#26/#28/#29/#31/#32 empresa/oficial por suborden. Origen: relacion tecnica. Dominio: WorkOrder.assignments. */
+  //* FSD BT #25/#26/#28/#29/#31/#32 empresa/oficial por suborden. Origen: relacion tecnica. Dominio: WorkOrder.assignments. */
   @OneToMany(
     () => BtFieldAssignmentEntity,
     (assignment) => assignment.workOrder,

@@ -1,9 +1,10 @@
 import type { DateTime } from '@pormeldev/axis-common-lib';
 import { Column, Entity, Index, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { BtDocumentEntity } from './bt-document.entity';
-import { BtAffectedCustomersHistoryColumns } from '../../../fields/bt-affected-customers-history-columns.enum';
+
 import { oracleDateTimeTransformer } from '../../../transformer/oracle-date-time.transformer';
-import { BtTableNames } from '../../../schema/bt-table-names.enum';
+import { BtTableNames } from '../../../bt-table-names.enum';
+import { BtAffectedCustomersHistoryColumns } from '../../../fields/bt-affected-customer-history-columns-enum';
 
 @Entity({ name: BtTableNames.AFFECTED_CUSTOMERS_HISTORY })
 @Index('UK_BT_AFF_HIST_DOMAIN', ['id'], { unique: true })

@@ -1,0 +1,9 @@
+export enum BtAffectedCustomersHistoryColumns {
+  ID = 'ID',
+  DOMAIN_ID = 'DOMAIN_ID',
+  DOCUMENT_ID = 'DOCUMENT_ID',
+  AFFECTED_CUSTOMERS = 'AFFECTED_CUSTOMERS',
+  RECORDED_AT = 'RECORDED_AT',
+  REASON = 'REASON',
+  SOURCE = 'SOURCE',
+}
